@@ -275,9 +275,15 @@ void DirectXRender::CreateWindowSizeDependentResources()
         swapChainDesc.SampleDesc.Count = 1;                          // don't use multi-sampling
         swapChainDesc.SampleDesc.Quality = 0;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+#ifdef _WINPHONE
+        swapChainDesc.BufferCount = 1;                               // WP8: Single buffer.
+        swapChainDesc.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;   // WP8: Must have stretch.
+        swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;         // WP8: Must use a different swap effect than Win8.
+#else
         swapChainDesc.BufferCount = 2;                               // use double buffering to enable flip
         swapChainDesc.Scaling = DXGI_SCALING_NONE;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // all Metro style apps must use this SwapEffect
+#endif
         swapChainDesc.Flags = 0;
 
         // Once the desired swap chain description is configured, it must be created on the same adapter as our D3D Device
@@ -426,6 +432,14 @@ void DirectXRender::Render()
 // Method to deliver the final image to the display.
 void DirectXRender::Present()
 {
+#ifdef _WINPHONE
+    // WP8 does not support Present1 with parameters
+
+    // The first argument instructs DXGI to block until VSync, putting the application
+    // to sleep until the next VSync. This ensures we don't waste any cycles rendering
+    // frames that will never be displayed to the screen.
+    HRESULT hr = m_swapChain->Present(1, 0);
+#else
     // The application may optionally specify "dirty" or "scroll" rects to improve efficiency
     // in certain scenarios.  In this sample, however, we do not utilize those features.
     DXGI_PRESENT_PARAMETERS parameters = {0};
@@ -438,7 +452,7 @@ void DirectXRender::Present()
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
     HRESULT hr = m_swapChain->Present1(1, 0, &parameters);
-
+#endif
     // If the device was removed either by a disconnect or a driver upgrade, we 
     // must completely reinitialize the renderer.
     if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)

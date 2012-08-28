@@ -25,6 +25,11 @@ THE SOFTWARE.
 #include "FontLoader.h"
 #include "CCCommon.h"
 
+#ifdef _WINPHONE
+#include <winbase.h>
+#include "MemStream.h"
+#endif
+
 using namespace Microsoft::WRL;
 using namespace Windows::UI::Core;
 using namespace Windows::Foundation;
@@ -312,18 +317,27 @@ Platform::Array<byte>^  DXTextPainter::DrawTextToImage(Platform::String^ text, W
 	}
 
 	ComPtr<IStream> stream;
+#ifdef _WINPHONE
+	MemStream::Create((UINT)ceilf(tSize->Width) * (UINT)ceilf(tSize->Height) * 4 * 9 / 8, &stream);
+#else
 	auto refStream = ref new InMemoryRandomAccessStream();
 	DX::ThrowIfFailed(
 		CreateStreamOverRandomAccessStream(reinterpret_cast<IUnknown*>(refStream) ,IID_PPV_ARGS(&stream))
 		);
+#endif
 	GUID wicFormat = GUID_ContainerFormatPng;
 	SaveBitmapToStream(m_d2dTargetBitmap, m_wicFactory, m_d2dContext, wicFormat, stream.Get());
 
+#ifdef _WINPHONE
+        stream->Seek(LARGE_INTEGER(), 0, nullptr);
+	ComPtr<IStream> stream2(stream);
+#else
 	refStream->Seek(0);
 	ComPtr<IStream> stream2;
 	DX::ThrowIfFailed(
 		CreateStreamOverRandomAccessStream(reinterpret_cast<IUnknown*>(refStream) ,IID_PPV_ARGS(&stream2))
 		);
+#endif
 	ComPtr<IWICBitmapDecoder> wicBitmapDecoder;
 	DX::ThrowIfFailed(
 		m_wicFactory->CreateDecoderFromStream(stream2.Get(),nullptr,WICDecodeMetadataCacheOnDemand,&wicBitmapDecoder)

@@ -8,6 +8,8 @@
 #include "pch.h"
 #include "BasicReaderWriter.h"
 #include <ppltasks.h>
+#include <wrl\wrappers\corewrappers.h>
+#include "FileHelper.h"
 
 using namespace Microsoft::WRL;
 using namespace Windows::Storage;
@@ -103,14 +105,9 @@ void BasicReaderWriter::ReadDataAsync(
     _In_ ReadDataAsyncCallback^ callback
     )
 {
-    task<StorageFile^>(m_location->GetFileAsync(filename)).then([=](StorageFile^ file)
-    {
-        return FileIO::ReadBufferAsync(file);
-    }).then([=](IBuffer^ buffer)
-    {
-        auto fileData = ref new Platform::Array<byte>(buffer->Length);
-        DataReader::FromBuffer(buffer)->ReadBytes(fileData);
-        callback(fileData, AsyncStatus::Completed);
+    auto loadTask = DX::ReadDataAsync(filename);
+    auto createTask = loadTask.then([&, this](DX::ByteArray ba) {
+        callback(ba.data, AsyncStatus::Completed);
     });
 }
 
@@ -165,6 +162,11 @@ void BasicReaderWriter::WriteDataAsync(
     _In_ WriteDataAsyncCallback^ callback
     )
 {
+#ifdef _WINPHONE
+#ifdef MISSING
+    //! \todo: implement for WP8
+#endif
+#else
     task<StorageFile^>(m_location->CreateFileAsync(filename, CreationCollisionOption::ReplaceExisting)).then([=](StorageFile^ file)
     {
         return FileIO::WriteBytesAsync(file, fileData);
@@ -172,4 +174,5 @@ void BasicReaderWriter::WriteDataAsync(
     {
         callback(AsyncStatus::Completed);
     });
+#endif
 }
