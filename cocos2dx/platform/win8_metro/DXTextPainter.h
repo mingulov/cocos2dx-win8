@@ -28,7 +28,9 @@ THE SOFTWARE.
 #include <d2d1_1.h>
 #include <dwrite_1.h>
 #include <wincodec.h>
+#ifndef _WINPHONE
 #include <shcore.h>
+#endif
 #include "DirectXHelper.h"
 
 class FontLoader;

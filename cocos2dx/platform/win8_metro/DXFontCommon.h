@@ -23,12 +23,16 @@
 #include <d2d1_1.h>
 #include <dwrite_1.h>
 #include <wincodec.h>
+#ifndef _WINPHONE
 #include <shcore.h>
+#endif
 
 #include <objidl.h>
 #include <strsafe.h>
 #include <wrl.h>
+#ifndef _WINPHONE
 #include <windows.ui.xaml.media.dxinterop.h>
+#endif
 #include <ppltasks.h>
 #include <agile.h>
 #include <collection.h>

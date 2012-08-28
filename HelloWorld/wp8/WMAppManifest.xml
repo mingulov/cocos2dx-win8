@@ -6,7 +6,7 @@
     <Capabilities>
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" ImagePath="HelloWorld.exe" ImageParams="" />
+      <DefaultTask Name="_default" ImagePath="HelloWorld_WP8.exe" ImageParams="" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="HelloWorldToken" TaskName="_default">

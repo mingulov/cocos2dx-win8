@@ -8,6 +8,8 @@
 #pragma once
 #include "pch.h"
 
+#ifndef _WINPHONE
+
 class MediaStreamer
 {
 private:
@@ -39,3 +41,4 @@ public:
     void ReadAll(uint8* buffer, uint32 maxBufferSize, uint32* bufferLength); 
     void Restart();
 };
+#endif

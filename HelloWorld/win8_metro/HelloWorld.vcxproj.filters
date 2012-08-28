@@ -514,6 +514,9 @@
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\DirectXHelper.h">
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FileHelper.h">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\cocos2dx\support\image_support\TGAlib.h">
       <Filter>cocos2dx\support\image_support</Filter>
     </ClInclude>

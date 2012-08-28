@@ -504,6 +504,12 @@
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\MemStream.h">
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FontFileStream.h">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FontLoader.h">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\BasicLoader.h">
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClInclude>
@@ -511,6 +517,9 @@
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClInclude>
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\DirectXHelper.h">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FileHelper.h">
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClInclude>
     <ClInclude Include="..\..\cocos2dx\support\image_support\TGAlib.h">
@@ -666,7 +675,6 @@
     <ClInclude Include="..\..\tinyxml\tinyxml.h">
       <Filter>tinyxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FileHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -931,6 +939,12 @@
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClCompile>
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\MemStream.cpp">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cocos2dx\platform\win8_metro\FontLoader.cpp">
+      <Filter>cocos2dx\platform\win8_metro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cocos2dx\platform\win8_metro\FontFileStream.cpp">
       <Filter>cocos2dx\platform\win8_metro</Filter>
     </ClCompile>
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\BasicLoader.cpp">

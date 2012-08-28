@@ -442,6 +442,7 @@ void Audio::PreloadSoundEffect(const char* pszFilePath, bool isMusic)
 
     int sound = Hash(pszFilePath);
 
+#ifndef _WINPHONE
 	MediaStreamer mediaStreamer;
 	mediaStreamer.Initialize(cocos2d::CCUtf8ToUnicode(pszFilePath).c_str());
 	m_soundEffects[sound].m_soundID = sound;	
@@ -492,6 +493,7 @@ void Audio::PreloadSoundEffect(const char* pszFilePath, bool isMusic)
 	m_soundEffects[sound].m_audioBuffer.pContext = &m_soundEffects[sound];
 	m_soundEffects[sound].m_audioBuffer.Flags = XAUDIO2_END_OF_STREAM;
     m_soundEffects[sound].m_audioBuffer.LoopCount = 0;
+#endif
 }
 
 void Audio::UnloadSoundEffect(const char* pszFilePath)

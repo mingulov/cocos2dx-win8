@@ -9,6 +9,9 @@
 
 #include "pch.h"
 #include <map>
+#ifdef _WINPHONE
+#include <xaudio2.h>
+#endif
 
 static const int STREAMING_BUFFER_SIZE = 65536;
 static const int MAX_BUFFER_COUNT = 3;

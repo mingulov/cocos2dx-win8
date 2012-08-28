@@ -92,7 +92,9 @@ bool CCEGLView::Create()
         m_initWinHeight = (int)render->m_window->Bounds.Height;
         setDesignResolution(m_initWinWidth, m_initWinHeight);
         SetBackBufferRenderTarget();
+#ifndef _WINPHONE
         m_oldViewState = int(Windows::UI::ViewManagement::ApplicationView::Value);
+#endif
 		s_pMainWindow = this;
 		bRet = true;
 	} while (0);
@@ -635,9 +637,11 @@ void CCEGLView::OnWindowSizeChanged()
 
     CCDirector::sharedDirector()->reshapeProjection(getSize());
 
+#ifndef _WINPHONE
     int newState = int(Windows::UI::ViewManagement::ApplicationView::Value);
     CCApplication::sharedApplication().applicationViewStateChanged(newState, m_oldViewState);
     m_oldViewState = newState;
+#endif
 }
 
 void CCEGLView::OnCharacterReceived(unsigned int keyCode)

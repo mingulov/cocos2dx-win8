@@ -11,6 +11,8 @@
 
 using namespace Windows::ApplicationModel;
 
+#ifndef _WINPHONE
+
 MediaStreamer::MediaStreamer()
 {
     m_reader = nullptr;
@@ -202,3 +204,5 @@ void MediaStreamer::Restart()
         m_reader->SetCurrentPosition(GUID_NULL, var)
     );
 }
+
+#endif

@@ -31,7 +31,11 @@ THE SOFTWARE.
 #include <d2d1effects.h>
 #include <dwrite_1.h>
 #include <wincodec.h>
+#ifdef _WINPHONE
+#include <agile.h>
+#else
 #include <XInput.h>
+#endif
 #include "DirectXHelper.h"
 #include "DXTextPainter.h"
 

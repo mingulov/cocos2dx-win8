@@ -29,7 +29,9 @@ THE SOFTWARE.
 #include <d3d11_1.h>
 #include <d2d1.h>
 #include <directxmath.h>
+#ifndef _WINPHONE
 #include <d3dcompiler.h>
+#endif
 #include "CCCommon.h"
 #include "CCGeometry.h"
 #include <stack>
@@ -233,7 +235,9 @@ private:
 #else 
 	std::stack<MatrixStruct> m_MatrixStack;
 #endif
+#ifndef _WINPHONE
     int m_oldViewState;
+#endif
 };
 
 NS_CC_END;

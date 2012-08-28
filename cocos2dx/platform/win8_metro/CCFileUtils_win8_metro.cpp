@@ -34,8 +34,8 @@ THE SOFTWARE.
 #include <mmreg.h>
 #include <mfidl.h>
 #include <mfapi.h>
-#include <mfreadwrite.h>
-#include <mfmediaengine.h>
+//#include <mfreadwrite.h>
+//#include <mfmediaengine.h>
 
 using namespace Windows::Storage;
 using namespace Windows::ApplicationModel;
