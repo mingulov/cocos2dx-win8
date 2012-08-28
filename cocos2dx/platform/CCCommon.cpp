@@ -349,6 +349,7 @@ void CCLog(const char * pszFormat, ...)
 
 void CCMessageBox(const char * pszMsg, const char * pszTitle)
 {
+#ifndef _WINPHONE
     // Create the message dialog and set its content
     Platform::String^ message = ref new Platform::String(CCUtf8ToUnicode(pszMsg).c_str());
     Platform::String^ title = ref new Platform::String(CCUtf8ToUnicode(pszTitle).c_str());
@@ -359,6 +360,11 @@ void CCMessageBox(const char * pszMsg, const char * pszTitle)
 
     // Show the message dialog
     msg->ShowAsync();
+#else
+#ifdef MISSING
+    //! \todo: to be implemented
+#endif
+#endif
 }
 
 std::wstring CCUtf8ToUnicode(const char * pszUtf8Str, unsigned len/* = -1*/)
