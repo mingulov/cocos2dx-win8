@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
+  <DefaultLanguage xmlns="" code="en"/>
+  <App xmlns="" ProductID="{c24ba24c-7c72-4709-949b-47b4979bf719}" Title="HelloWorld" RuntimeType="Modern Native" Version="1.0.0.0" Genre="apps.normal"  Author="cocos2d-x" Description="Simple cocos2d-x application" Publisher="cocos2d-x" PublisherID="{8caeb16e-abbb-450a-81aa-2c89b0fb097a}">
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
+    <Capabilities>
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" ImagePath="HelloWorld.exe" ImageParams="" />
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="HelloWorldToken" TaskName="_default">
+        <TemplateFlip>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
+          <Count>0</Count>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
+          <Title>HelloWorld</Title>
+          <BackContent></BackContent>
+          <BackBackgroundImageURI></BackBackgroundImageURI>
+          <BackTitle></BackTitle>
+          <LargeBackgroundImageURI></LargeBackgroundImageURI>
+          <LargeBackContent></LargeBackContent>
+          <LargeBackBackgroundImageURI></LargeBackBackgroundImageURI>
+          <DeviceLockImageURI></DeviceLockImageURI>
+          <HasLarge></HasLarge>
+        </TemplateFlip>
+      </PrimaryToken>
+    </Tokens>
+    <ScreenResolutions>
+      <ScreenResolution Name="ID_RESOLUTION_WVGA"/>
+      <ScreenResolution Name="ID_RESOLUTION_WXGA"/>
+      <ScreenResolution Name="ID_RESOLUTION_HD720P"/>
+    </ScreenResolutions>
+  </App>
+</Deployment>
