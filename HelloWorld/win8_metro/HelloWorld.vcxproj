@@ -255,6 +255,8 @@
     <ClInclude Include="..\..\cocos2dx\platform\CCSAXParser.h" />
     <ClInclude Include="..\..\cocos2dx\platform\CCStdC.h" />
     <ClInclude Include="..\..\cocos2dx\platform\platform.h" />
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FontLoader.h" />
+    <ClInclude Include="..\..\cocos2dx\platform\win8_metro\FontFileStream.h" />
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\BasicLoader.h" />
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\BasicReaderWriter.h" />
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\CCApplication_win8_metro.h" />
@@ -392,6 +394,8 @@
     <ClCompile Include="..\..\cocos2dx\platform\CCSAXParser.cpp" />
     <ClCompile Include="..\..\cocos2dx\platform\CCStdC.cpp" />
     <ClCompile Include="..\..\cocos2dx\platform\platform.cpp" />
+    <ClCompile Include="..\..\cocos2dx\platform\win8_metro\FontLoader.cpp" />
+    <ClCompile Include="..\..\cocos2dx\platform\win8_metro\FontFileStream.cpp" />
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\BasicLoader.cpp" />
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\BasicReaderWriter.cpp" />
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\CCApplication_win8_metro.cpp" />

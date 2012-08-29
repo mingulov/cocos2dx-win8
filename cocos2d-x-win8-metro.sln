@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWorld", "HelloWorld\wi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWorld_WP8", "HelloWorld\wp8\HelloWorld_WP8.vcxproj", "{C24BA24C-7C72-4709-949B-47B4979BF719}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests_WP8", "tests\wp8\Cocos2d_WP8.vcxproj", "{8C56B908-EC31-11E1-814D-BF216288709B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -67,6 +69,20 @@ Global
 		{C24BA24C-7C72-4709-949B-47B4979BF719}.Release|Win32.Build.0 = Release|Win32
 		{C24BA24C-7C72-4709-949B-47B4979BF719}.Release|Win32.Deploy.0 = Release|Win32
 		{C24BA24C-7C72-4709-949B-47B4979BF719}.Release|x64.ActiveCfg = Release|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|ARM.Build.0 = Debug|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|ARM.Deploy.0 = Debug|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|Win32.Build.0 = Debug|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|Win32.Deploy.0 = Debug|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Debug|x64.ActiveCfg = Debug|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|ARM.ActiveCfg = Release|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|ARM.Build.0 = Release|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|ARM.Deploy.0 = Release|ARM
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|Win32.ActiveCfg = Release|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|Win32.Build.0 = Release|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|Win32.Deploy.0 = Release|Win32
+		{8C56B908-EC31-11E1-814D-BF216288709B}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
