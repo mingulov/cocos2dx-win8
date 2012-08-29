@@ -123,7 +123,9 @@ void CCFrameworkView::SetWindow(
     )
 {
 	CCLog("CCFrameworkView::+SetWindow()");
+#ifndef _WINPHONE
 	window->PointerCursor = ref new CoreCursor(CoreCursorType::Arrow, 0);
+#endif
 	window->VisibilityChanged +=
 		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &CCFrameworkView::OnVisibilityChanged);
 
