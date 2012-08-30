@@ -1234,5 +1234,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
+    <Xml Include="RPALManifest.xml" />
   </ItemGroup>
 </Project>

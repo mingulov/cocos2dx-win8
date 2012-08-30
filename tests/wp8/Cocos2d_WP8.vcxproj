@@ -61,22 +61,22 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINAPI_PARTITION_PHONE_RESTRICTED;_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINAPI_PARTITION_PHONE_RESTRICTED;_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
-      <PreprocessorDefinitions>_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINAPI_PARTITION_PHONE_RESTRICTED;_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <PreprocessorDefinitions>_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINAPI_PARTITION_PHONE_RESTRICTED;_WINPHONE;PSAPI_VERSION=2;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);TIXML_USE_STL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -90,7 +90,7 @@
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</CompileAsWinRT>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d2d1.lib;d3d11.lib;dxgi.lib;dwrite.lib;dxguid.lib;xaudio2.lib;libpng.lib;libxml2.lib;libjpeg.lib;zlib.lib;windowscodecs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d2d1.lib;d3d11.lib;dxgi.lib;dwrite.lib;dxguid.lib;xaudio2.lib;libpng.lib;libxml2.lib;libjpeg.lib;zlib.lib;windowscodecs.lib;mincore.lib;RuntimeObject.lib;PhoneAppModelHost.lib</AdditionalDependencies>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
       <!-- TODO:Please remove below IgnoreSpecificDefaultLibraries once dev11 bug 362091 is fixed -->
       <IgnoreSpecificDefaultLibraries>ole32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
+    <Xml Include="RPALManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Box2D\Box2D.h" />
@@ -613,10 +614,6 @@
     <ClCompile Include="..\..\tests\tests\TransitionsTest\TransitionsTest.cpp" />
     <ClCompile Include="..\..\tests\tests\UserDefaultTest\UserDefaultTest.cpp" />
     <ClCompile Include="..\..\tests\tests\ZwoptexTest\ZwoptexTest.cpp" />
-    <ClCompile Include="..\..\tinyxml\tinystr.cpp" />
-    <ClCompile Include="..\..\tinyxml\tinyxml.cpp" />
-    <ClCompile Include="..\..\tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="..\..\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\tests\Box2DTestBed\Box2dView.cpp" />
     <ClCompile Include="..\tests\Box2DTestBed\GLES-Render.cpp" />
     <ClCompile Include="..\tests\Box2DTestBed\Test.cpp" />
