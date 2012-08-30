@@ -293,6 +293,8 @@
     <ClInclude Include="..\..\CocosDenshion\include\Export.h" />
     <ClInclude Include="..\..\CocosDenshion\include\SimpleAudioEngine.h" />
     <ClInclude Include="..\..\CocosDenshion\win8_metro\Audio.h" />
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\SoundFileReader.h" />
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.h" />
     <ClInclude Include="..\..\CocosDenshion\win8_metro\MediaStreamer.h" />
     <ClInclude Include="..\..\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\tinyxml\tinyxml.h" />
@@ -354,6 +356,8 @@
     <ClCompile Include="..\..\cocos2dx\tileMap_parallax_nodes\CCTMXTiledMap.cpp" />
     <ClCompile Include="..\..\cocos2dx\tileMap_parallax_nodes\CCTMXXMLParser.cpp" />
     <ClCompile Include="..\..\CocosDenshion\win8_metro\Audio.cpp" />
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.cpp" />
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\SoundFileReader.cpp" />
     <ClCompile Include="..\..\cocos2dx\actions\CCAction.cpp" />
     <ClCompile Include="..\..\cocos2dx\actions\CCActionCamera.cpp" />
     <ClCompile Include="..\..\cocos2dx\actions\CCActionEase.cpp" />

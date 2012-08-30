@@ -301,9 +301,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\effect1.wav">
-      <Filter>Resources</Filter>
-    </None>
     <None Include="Assets\background.mp3">
       <Filter>Resources</Filter>
     </None>
@@ -796,6 +793,12 @@
       <Filter>CocosDenshion\win8_metro</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CocosDenshion\win8_metro\MediaStreamer.h">
+      <Filter>CocosDenshion\win8_metro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\SoundFileReader.h">
+      <Filter>CocosDenshion\win8_metro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.h">
       <Filter>CocosDenshion\win8_metro</Filter>
     </ClInclude>
     <ClInclude Include="..\..\cocos2dx\platform\win8_metro\DXTextPainter.h">
@@ -1545,6 +1548,12 @@
       <Filter>CocosDenshion\win8_metro</Filter>
     </ClCompile>
     <ClCompile Include="..\..\CocosDenshion\win8_metro\MediaStreamer.cpp">
+      <Filter>CocosDenshion\win8_metro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\SoundFileReader.cpp">
+      <Filter>CocosDenshion\win8_metro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.cpp">
       <Filter>CocosDenshion\win8_metro</Filter>
     </ClCompile>
     <ClCompile Include="..\..\cocos2dx\platform\win8_metro\DXTextPainter.cpp">
@@ -2666,5 +2675,11 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
+    <Xml Include="RPALManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\effect1.wav">
+      <Filter>Resources</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -297,6 +297,8 @@
     <ClInclude Include="..\..\CocosDenshion\include\SimpleAudioEngine.h" />
     <ClInclude Include="..\..\CocosDenshion\win8_metro\Audio.h" />
     <ClInclude Include="..\..\CocosDenshion\win8_metro\MediaStreamer.h" />
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.h" />
+    <ClInclude Include="..\..\CocosDenshion\win8_metro\SoundFileReader.h" />
     <ClInclude Include="..\..\tests\tests\AccelerometerTest\AccelerometerTest.h" />
     <ClInclude Include="..\..\tests\tests\ActionManagerTest\ActionManagerTest.h" />
     <ClInclude Include="..\..\tests\tests\ActionsTest\ActionsTest.h" />
@@ -552,6 +554,8 @@
     <ClCompile Include="..\..\cocos2dx\touch_dispatcher\CCTouchDispatcher.cpp" />
     <ClCompile Include="..\..\cocos2dx\touch_dispatcher\CCTouchHandler.cpp" />
     <ClCompile Include="..\..\CocosDenshion\win8_metro\MediaStreamer.cpp" />
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\RandomAccessReader.cpp" />
+    <ClCompile Include="..\..\CocosDenshion\win8_metro\SoundFileReader.cpp" />
     <ClCompile Include="..\..\CocosDenshion\win8_metro\SimpleAudioEngine.cpp" />
     <ClCompile Include="..\..\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\tinyxml\tinyxml.cpp" />
@@ -646,6 +650,12 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Assets\effect1.raw">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <Media Include="Assets\effect1.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <None Include="Assets\background.mp3">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Assets\fonts\arial16.fnt">
@@ -1183,16 +1193,6 @@
     <Font Include="Assets\fonts\Paint Boy.ttf" />
     <Font Include="Assets\fonts\Schwarzwald Regular.ttf" />
     <Font Include="Assets\fonts\Scissor Cuts.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\background.mp3">
-      <FileType>Document</FileType>
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Assets\effect1.wav">
-      <FileType>Document</FileType>
-      <DeploymentContent>true</DeploymentContent>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\animations\grossini.plist.xml">
