@@ -125,7 +125,8 @@ HRESULT STDMETHODCALLTYPE MemStream::Write(void const* pv, ULONG cb, ULONG* pcbW
 {
 	RequestResize(m_curPos + cb);
 	memmove(m_buf + m_curPos, pv, cb);
-	*pcbWritten = cb;
+	if (pcbWritten)
+		*pcbWritten = cb;
 	m_curPos += cb;
 	if (m_curPos > m_size)
 		m_size = m_curPos;
