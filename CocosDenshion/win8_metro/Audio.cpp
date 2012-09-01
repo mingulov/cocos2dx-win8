@@ -14,6 +14,7 @@
 #include "MediaStreamer.h"
 #endif
 #include "CCCommon.h"
+#include <mmreg.h>
 
 void AudioEngineCallbacks::Initialize(Audio *audio)
 {
@@ -438,7 +439,6 @@ bool Audio::IsSoundEffectStarted(unsigned int sound)
     return m_soundEffects[sound].m_soundEffectStarted;
 }
 
-#include <mmreg.h>
 void Audio::PreloadSoundEffect(const char* pszFilePath, bool isMusic)
 {
     if (m_engineExperiencedCriticalError) {
