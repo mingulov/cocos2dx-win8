@@ -306,8 +306,8 @@ Platform::Array<byte>^  DXTextPainter::DrawTextToImage(Platform::String^ text, W
 		tSize->Height =  newSize.Height;
 	}
 
-	m_textLayout->SetMaxWidth(tSize->Width);
-	m_textLayout->SetMaxHeight(tSize->Height);
+	m_textLayout->SetMaxWidth(tSize->Width / GetResolutionScale());
+	m_textLayout->SetMaxHeight(tSize->Height / GetResolutionScale());
 
 	if(m_whiteBrush == nullptr){
 		DX::ThrowIfFailed(
