@@ -329,7 +329,7 @@ Platform::Array<byte>^  DXTextPainter::DrawTextToImage(Platform::String^ text, W
 	SaveBitmapToStream(m_d2dTargetBitmap, m_wicFactory, m_d2dContext, wicFormat, stream.Get());
 
 #ifdef _WINPHONE
-        stream->Seek(LARGE_INTEGER(), 0, nullptr);
+	stream->Seek(LARGE_INTEGER(), 0, nullptr);
 	ComPtr<IStream> stream2(stream);
 #else
 	refStream->Seek(0);
