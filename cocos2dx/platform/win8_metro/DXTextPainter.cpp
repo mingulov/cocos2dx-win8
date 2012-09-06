@@ -212,12 +212,6 @@ Platform::Array<byte>^  DXTextPainter::DrawTextToImage(Platform::String^ text, W
 		return nullptr;
 	}
 
-	if (GetResolutionScaleInt() != 100)
-	{
-		// workaround against some bug (?), incorrect work with other alignments
-		alignment = TextAlignment::TextAlignmentLeft;
-	}
-
 	//set text alignment and paragraph alignment
 	switch (alignment)
 	{
