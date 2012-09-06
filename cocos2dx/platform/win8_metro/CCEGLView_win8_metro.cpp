@@ -205,12 +205,12 @@ void CCEGLView::setScreenScale(float factor)
 
 bool CCEGLView::canSetContentScaleFactor()
 {
-    return false;
+    return true;
 }
 
 void CCEGLView::setContentScaleFactor(float contentScaleFactor)
 {
-    m_fScreenScaleFactor = contentScaleFactor;
+    // do nothing - content scale factor is used automatically by CCDirector
 }
 
 void CCEGLView::setDesignResolution(int dx, int dy)
@@ -703,7 +703,7 @@ void CCEGLView::OnCharacterReceived(unsigned int keyCode)
 
 void CCEGLView::ConvertPointerCoords(float &x, float &y)
 {
-	float factor = CC_CONTENT_SCALE_FACTOR()/m_fScreenScaleFactor;
+	float factor = 1/m_fScreenScaleFactor;
 	// received coord are calculated within original window (ResolutionScale)
 	x *= GetResolutionScale();
 	y *= GetResolutionScale();
