@@ -215,6 +215,7 @@ private:
     EGLTouchDelegate*   m_pDelegate;
 	
     CCSize              m_sizeInPoints;
+    CCSize              m_sizeDesign;
     float               m_fScreenScaleFactor;
     RECT                m_rcViewPort;
 

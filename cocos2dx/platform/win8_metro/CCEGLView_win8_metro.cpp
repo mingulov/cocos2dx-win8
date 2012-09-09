@@ -54,6 +54,20 @@ static float GetResolutionScale()
     return ret;
 }
 
+template<class T>
+void SwapIfLandscape(T *a, T *b, T *c = nullptr, T *d = nullptr)
+{
+    ccDeviceOrientation orientation = CCDirector::sharedDirector()->getDeviceOrientation();
+    if (orientation == kCCDeviceOrientationLandscapeLeft || orientation == kCCDeviceOrientationLandscapeRight)
+    {
+        CC_SWAP(*a, *b, T);
+		if (c && d)
+		{
+			CC_SWAP(*c, *d, T);
+		}
+    }
+}
+
 CCEGLView::CCEGLView()
 : m_pDelegate(NULL)
 , m_fScreenScaleFactor(1.0f)
@@ -101,7 +115,7 @@ bool CCEGLView::Create()
 	do 
 	{
         m_initWinSize = GetScreenSize();
-        setDesignResolution((int)m_initWinSize.width, (int)m_initWinSize.height);
+        setDesignResolution(m_initWinSize.width, (int)m_initWinSize.height);
         SetBackBufferRenderTarget();
         m_oldViewState = int(Windows::UI::ViewManagement::ApplicationView::Value);
 		s_pMainWindow = this;
@@ -131,6 +145,9 @@ CCSize CCEGLView::GetScreenSize() const
     // m_window size might be less than its real size due to ResolutionScale
     size.width *= GetResolutionScale();
     size.height *= GetResolutionScale();
+
+    // rotation support
+    SwapIfLandscape(&size.height, &size.width);
 
     return size;
 }
@@ -213,6 +230,8 @@ CCRect CCEGLView::getScreenRectInPoints() const
     rect.size.width = float(winSize.width) / m_fScreenScaleFactor;
     rect.size.height = float(winSize.height) / m_fScreenScaleFactor;
 
+    SwapIfLandscape(&rect.origin.x, &rect.origin.y, &rect.size.width, &rect.size.height);
+
     return rect;
 }
 
@@ -247,17 +266,26 @@ void CCEGLView::setDesignResolution(int dx, int dy)
     m_sizeInPoints.width = (float)dx;
     m_sizeInPoints.height = (float)dy;
 
+    // store the originally provided design size
+    m_sizeDesign = m_sizeInPoints;
+
+    SwapIfLandscape(&m_sizeInPoints.width, &m_sizeInPoints.height);
+
     CCSize winSize = GetScreenSize();
     m_fScreenScaleFactor = min(winSize.width / dx, winSize.height / dy);
 
     int viewPortW = (int)(m_sizeInPoints.width * m_fScreenScaleFactor);
     int viewPortH = (int)(m_sizeInPoints.height * m_fScreenScaleFactor);
 
+    SwapIfLandscape(&viewPortH, &viewPortW);
+
     // calculate client new width and height
     m_rcViewPort.left   = LONG((winSize.width - viewPortW) / 2);
     m_rcViewPort.top    = LONG((winSize.height - viewPortH) / 2);
     m_rcViewPort.right  = LONG(m_rcViewPort.left + viewPortW);
     m_rcViewPort.bottom = LONG(m_rcViewPort.top + viewPortH);
+
+    SwapIfLandscape(&m_rcViewPort.left, &m_rcViewPort.top, &m_rcViewPort.right, &m_rcViewPort.bottom);
 }
 
 void CCEGLView::SetBackBufferRenderTarget()
@@ -663,7 +691,7 @@ void CCEGLView::OnWindowSizeChanged()
     m_depthStencilView = DirectXRender::SharedDXRender()->m_depthStencilView.Get();
 
     // recalculate viewport and scale factor
-    setDesignResolution(m_sizeInPoints.width, m_sizeInPoints.height);
+    setDesignResolution(m_sizeDesign.width, m_sizeDesign.height);
 
     CCDirector::sharedDirector()->reshapeProjection(getSize());
 
