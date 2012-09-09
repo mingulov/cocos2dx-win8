@@ -662,11 +662,8 @@ void CCEGLView::OnWindowSizeChanged()
     m_renderTargetView = DirectXRender::SharedDXRender()->m_renderTargetView.Get();
     m_depthStencilView = DirectXRender::SharedDXRender()->m_depthStencilView.Get();
 
-    // 重新确定 viewPort
-    CCSize winSize = GetScreenSize();
-
-    m_fWinScaleX = (float)winSize.width / m_initWinSize.width;
-    m_fWinScaleY = (float)winSize.height / m_initWinSize.height;
+    // recalculate viewport and scale factor
+    setDesignResolution(m_sizeInPoints.width, m_sizeInPoints.height);
 
     CCDirector::sharedDirector()->reshapeProjection(getSize());
 
