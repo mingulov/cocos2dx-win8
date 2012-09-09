@@ -115,6 +115,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     CCDirector *pDirector = CCDirector::sharedDirector();
     pDirector->setOpenGLView(&CCEGLView::sharedOpenGLView());
 
+    // enable Full Screen usage (allow drawing outside viewport)
+    // pDirector->enableFullScreenUsage(true);
+
     // enable High Resource Mode(2x, such as iphone4) and maintains low resource on other devices.
     // pDirector->enableRetinaDisplay(true);
 

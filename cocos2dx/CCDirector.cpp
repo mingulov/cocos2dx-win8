@@ -311,14 +311,13 @@ void CCDirector::setProjection(ccDirectorProjection kProjection)
 {
 	CCSize size = m_obWinSizeInPixels;
 	CCRect rect = m_obScreenRectInPixels;
-	rect = m_pobOpenGLView->getScreenRectInPoints();
 	if (!isFullScreenUsage())
 	{
 		// if not allowed full screen usage - use original data
 		rect.size = size;
 		rect.origin = CCPointZero;
 	}
-	float zeye = this->getZEye();
+	float zeye = this->getZEye(rect.size);
 	switch (kProjection)
 	{
 	case kCCDirectorProjection2D:
@@ -332,7 +331,7 @@ void CCDirector::setProjection(ccDirectorProjection kProjection)
 			1024 * CC_CONTENT_SCALE_FACTOR());
 		m_pobOpenGLView->D3DMatrixMode(CC_MODELVIEW);
 		m_pobOpenGLView->D3DLoadIdentity();
-		m_pobOpenGLView->D3DTranslate(-rect.origin.x,-rect.origin.y,0);
+		m_pobOpenGLView->D3DTranslate(-rect.origin.x, -rect.origin.y, 0);
 		break;
 
 	case kCCDirectorProjection3D:
@@ -342,14 +341,15 @@ void CCDirector::setProjection(ccDirectorProjection kProjection)
 		}
 		m_pobOpenGLView->D3DMatrixMode(CC_PROJECTION);
 		m_pobOpenGLView->D3DLoadIdentity();
-		m_pobOpenGLView->D3DPerspective(60, (CCfloat)rect.size.width/rect.size.height, 0.5f, zeye*2);
+		// fix for the issue #1334
+		m_pobOpenGLView->D3DPerspective(60, (CCfloat)rect.size.width/rect.size.height, 0.1f, zeye*2);
 
 		m_pobOpenGLView->D3DMatrixMode(CC_MODELVIEW);	
 		m_pobOpenGLView->D3DLoadIdentity();
 		m_pobOpenGLView->D3DLookAt( rect.size.width/2, rect.size.height/2, zeye,
 			rect.size.width/2, rect.size.height/2, 0,
 			0.0f, 1.0f, 0.0f);	
-		m_pobOpenGLView->D3DTranslate(-rect.origin.x,-rect.origin.y,0);
+		m_pobOpenGLView->D3DTranslate(-rect.origin.x, -rect.origin.y, 0);
 		break;
 			
 	case kCCDirectorProjectionCustom:
@@ -373,9 +373,14 @@ void CCDirector::purgeCachedData(void)
 	CCTextureCache::sharedTextureCache()->removeUnusedTextures();
 }
 
-float CCDirector::getZEye(void)
+float CCDirector::getZEye(const CCSize& size)
 {
-    return (m_obWinSizeInPixels.height / 1.1566f);	
+    float value = size.height;
+    if (size.height == 0)
+    {
+        value = m_obWinSizeInPixels.height;
+    }
+    return (value / 1.1566f);
 }
 
 void CCDirector::setAlphaBlending(bool bOn)
@@ -834,6 +839,8 @@ void CCDirector::setContentScaleFactor(CGFloat scaleFactor)
 	{
 		m_fContentScaleFactor = scaleFactor;
 		m_obWinSizeInPixels = CCSizeMake(m_obWinSizeInPoints.width * scaleFactor, m_obWinSizeInPoints.height * scaleFactor);
+		m_obScreenRectInPixels = CCRectMake(m_obScreenRectInPoints.origin.x * m_fContentScaleFactor, m_obScreenRectInPoints.origin.y * m_fContentScaleFactor,
+			m_obScreenRectInPoints.size.width * m_fContentScaleFactor, m_obScreenRectInPoints.size.height * m_fContentScaleFactor);
 
 		if (m_pobOpenGLView)
 		{
