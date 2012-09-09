@@ -258,7 +258,7 @@ public:
 	CCPoint convertToUI(const CCPoint& obPoint);
 
 	/// XXX: missing description 
-	float getZEye(void);
+	float getZEye(const CCSize& size = CCSizeZero);
 
 	// Scene Management
 
