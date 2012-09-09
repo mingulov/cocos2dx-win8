@@ -241,7 +241,6 @@ void CCEGLView::setDesignResolution(int dx, int dy)
 
     CCSize winSize = GetScreenSize();
     m_fScreenScaleFactor = min(winSize.width / dx, winSize.height / dy);
-    m_fScreenScaleFactor *= CCDirector::sharedDirector()->getContentScaleFactor();
 
     int viewPortW = (int)(m_sizeInPoints.width * m_fScreenScaleFactor);
     int viewPortH = (int)(m_sizeInPoints.height * m_fScreenScaleFactor);
