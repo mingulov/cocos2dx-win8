@@ -258,7 +258,7 @@ public:
 	CCPoint convertToUI(const CCPoint& obPoint);
 
 	/// XXX: missing description 
-	float getZEye(void);
+	float getZEye(const CCSize& size = CCSizeZero);
 
 	// Scene Management
 
@@ -372,6 +372,12 @@ public:
 	bool enableRetinaDisplay(bool enabled);
     bool isRetinaDisplay() { return m_bRetinaDisplay; }
 
+	/** Will enable full screen usage - allow drawing outside of viewport,
+	on the black bars on borders.
+	*/
+	bool enableFullScreenUsage(bool enabled);
+	bool isFullScreenUsage() { return m_bFullScreenUsage; }
+
 	/** There are 4 types of Director.
 	- kCCDirectorTypeNSTimer (default)
 	- kCCDirectorTypeMainLoop
@@ -466,6 +472,12 @@ protected:
 	/* content scale factor */
 	CGFloat	m_fContentScaleFactor;
 
+	/* screen rect in points */
+	CCRect	m_obScreenRectInPoints;
+
+	/* screen rect in pixels */
+	CCRect m_obScreenRectInPixels;
+
 	/* store the fps string */
 	char *m_pszFPS;
 
@@ -479,6 +491,9 @@ protected:
 	ccDeviceOrientation	m_eDeviceOrientation;
 	/* contentScaleFactor could be simulated */
 	bool m_bIsContentScaleSupported;
+
+	/* Full screen usage is allowed (outside of viewport) */
+	bool m_bFullScreenUsage;
 
 	bool m_bRetinaDisplay;
 	

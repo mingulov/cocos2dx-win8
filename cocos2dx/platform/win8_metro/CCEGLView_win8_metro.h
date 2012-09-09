@@ -153,6 +153,7 @@ public:
 
     void setIMEKeyboardState(bool bOpen);
 
+    CCRect getScreenRectInPoints() const;
     void getScreenRectInView(CCRect& rect);
     void setScreenScale(float factor);
 
@@ -195,7 +196,11 @@ public:
     void OnPointerReleased(int id, const CCPoint& point);
     void OnPointerMoved(int id, const CCPoint& point);
 protected:
-    void ConvertPointerCoords(float &x, float &y);
+    CCPoint ConvertPointerCoords(const CCPoint &point);
+    /**
+    @brief	get the screen (full window) size
+    */
+    CCSize GetScreenSize() const;
 
 private:
     ID3D11Device1*           m_d3dDevice;
@@ -212,13 +217,13 @@ private:
     EGLTouchDelegate*   m_pDelegate;
 	
     CCSize              m_sizeInPoints;
+    CCSize              m_sizeDesign;
     float               m_fScreenScaleFactor;
     RECT                m_rcViewPort;
 
     float               m_fWinScaleX;
     float               m_fWinScaleY;
-    int                 m_initWinWidth;
-    int                 m_initWinHeight;
+    CCSize              m_initWinSize;
 
     float m_color[4];
     int mMatrixMode;
