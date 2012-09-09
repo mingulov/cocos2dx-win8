@@ -100,10 +100,8 @@ bool CCEGLView::Create()
 	bool bRet = false;
 	do 
 	{
-        DirectXRender^ render = DirectXRender::SharedDXRender();
-        m_initWinWidth = (int)render->m_window->Bounds.Width;
-        m_initWinHeight = (int)render->m_window->Bounds.Height;
-        setDesignResolution(m_initWinWidth, m_initWinHeight);
+        m_initWinSize = GetScreenSize();
+        setDesignResolution((int)m_initWinSize.width, (int)m_initWinSize.height);
         SetBackBufferRenderTarget();
         m_oldViewState = int(Windows::UI::ViewManagement::ApplicationView::Value);
 		s_pMainWindow = this;
@@ -121,6 +119,20 @@ CCSize CCEGLView::getSize()
 CCSize CCEGLView::getSizeInPixel()
 {
     return getSize();
+}
+
+CCSize CCEGLView::GetScreenSize() const
+{
+    CCSize size;
+    DirectXRender^ render = DirectXRender::SharedDXRender();
+    size.width = render->m_window->Bounds.Width;
+    size.height = render->m_window->Bounds.Height;
+
+    // m_window size might be less than its real size due to ResolutionScale
+    size.width *= GetResolutionScale();
+    size.height *= GetResolutionScale();
+
+    return size;
 }
 
 bool CCEGLView::isOpenGLReady()
@@ -188,14 +200,12 @@ void CCEGLView::setIMEKeyboardState(bool /*bOpen*/)
 
 void CCEGLView::getScreenRectInView(CCRect& rect)
 {
-	DirectXRender^ render = DirectXRender::SharedDXRender();
-    float winWidth = render->m_window->Bounds.Width;
-    float winHeight = render->m_window->Bounds.Height;
-    
+    CCSize winSize = GetScreenSize();
+
     rect.origin.x = float(- m_rcViewPort.left) / m_fScreenScaleFactor;
-	rect.origin.y = float((m_rcViewPort.bottom - m_rcViewPort.top) - winHeight) / (2.0f * m_fScreenScaleFactor);
-    rect.size.width = float(winWidth) / m_fScreenScaleFactor;
-    rect.size.height = float(winHeight) / m_fScreenScaleFactor;
+    rect.origin.y = float(- m_rcViewPort.top) / m_fScreenScaleFactor;
+    rect.size.width = float(winSize.width) / m_fScreenScaleFactor;
+    rect.size.height = float(winSize.height) / m_fScreenScaleFactor;
 }
 
 void CCEGLView::setScreenScale(float factor)
@@ -205,6 +215,16 @@ void CCEGLView::setScreenScale(float factor)
 
 bool CCEGLView::canSetContentScaleFactor()
 {
+    // do not allow SetContentScaleFactor if the current design size
+    // is more than the screen.
+    CCSize winSize = GetScreenSize();
+    CCSize size = getSize();
+
+    if (size.width >= winSize.width || size.height >= winSize.height)
+    {
+        return false;
+    }
+
     return true;
 }
 
@@ -218,24 +238,17 @@ void CCEGLView::setDesignResolution(int dx, int dy)
     // 重新计算 contentScale 和 m_rcViewPort 
     m_sizeInPoints.width = (float)dx;
     m_sizeInPoints.height = (float)dy;
-    
-    DirectXRender^ render = DirectXRender::SharedDXRender();
-    float winWidth = render->m_window->Bounds.Width;
-    float winHeight = render->m_window->Bounds.Height;
 
-    // m_window size might be less than its real size due to ResolutionScale
-    winWidth *= GetResolutionScale();
-    winHeight *= GetResolutionScale();
-
-    m_fScreenScaleFactor = min(winWidth / dx, winHeight / dy);
+    CCSize winSize = GetScreenSize();
+    m_fScreenScaleFactor = min(winSize.width / dx, winSize.height / dy);
     m_fScreenScaleFactor *= CCDirector::sharedDirector()->getContentScaleFactor();
 
     int viewPortW = (int)(m_sizeInPoints.width * m_fScreenScaleFactor);
     int viewPortH = (int)(m_sizeInPoints.height * m_fScreenScaleFactor);
 
     // calculate client new width and height
-    m_rcViewPort.left   = LONG((winWidth - viewPortW) / 2);
-    m_rcViewPort.top    = LONG((winHeight - viewPortH) / 2);
+    m_rcViewPort.left   = LONG((winSize.width - viewPortW) / 2);
+    m_rcViewPort.top    = LONG((winSize.height - viewPortH) / 2);
     m_rcViewPort.right  = LONG(m_rcViewPort.left + viewPortW);
     m_rcViewPort.bottom = LONG(m_rcViewPort.top + viewPortH);
 }
@@ -643,12 +656,10 @@ void CCEGLView::OnWindowSizeChanged()
     m_depthStencilView = DirectXRender::SharedDXRender()->m_depthStencilView.Get();
 
     // 重新确定 viewPort
-    DirectXRender^ render = DirectXRender::SharedDXRender();
-    float winWidth = render->m_window->Bounds.Width;
-    float winHeight = render->m_window->Bounds.Height;
+    CCSize winSize = GetScreenSize();
 
-    m_fWinScaleX = (float)winWidth / m_initWinWidth;
-    m_fWinScaleY = (float)winHeight / m_initWinHeight;
+    m_fWinScaleX = (float)winSize.width / m_initWinSize.width;
+    m_fWinScaleY = (float)winSize.height / m_initWinSize.height;
 
     CCDirector::sharedDirector()->reshapeProjection(getSize());
 
@@ -701,14 +712,20 @@ void CCEGLView::OnCharacterReceived(unsigned int keyCode)
     }
 }
 
-void CCEGLView::ConvertPointerCoords(float &x, float &y)
+CCPoint CCEGLView::ConvertPointerCoords(const CCPoint &point)
 {
-	float factor = 1/m_fScreenScaleFactor;
+	CCPoint ret(point);
+	float factor = m_fScreenScaleFactor;
+
 	// received coord are calculated within original window (ResolutionScale)
-	x *= GetResolutionScale();
-	y *= GetResolutionScale();
-	x = (x / m_fWinScaleX - m_rcViewPort.left) * factor;
-	y = (y / m_fWinScaleY - m_rcViewPort.top) * factor;
+	ret.x *= GetResolutionScale();
+	ret.y *= GetResolutionScale();
+
+	ret.x = (ret.x / m_fWinScaleX - m_rcViewPort.left) / factor;
+	ret.y = (ret.y / m_fWinScaleY - m_rcViewPort.top) / factor;
+	//CCLog("Touch coord (%d, %d) -> (%d, %d)", (int)point.x, (int)point.y, (int)ret.x, (int)ret.y);
+
+	return ret;
 }
 
 void CCEGLView::OnPointerPressed(int id, const CCPoint& point)
@@ -732,10 +749,8 @@ void CCEGLView::OnPointerPressed(int id, const CCPoint& point)
     if (! pTouch || ! pSet)
         return;
 
-    float x = point.x;
-    float y = point.y;
-    ConvertPointerCoords(x, y);
-    pTouch->SetTouchInfo(0, x, y);
+    CCPoint internalPoint = ConvertPointerCoords(point);
+    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
     pSet->addObject(pTouch);
 
     m_pDelegate->touchesBegan(pSet, NULL);
@@ -749,10 +764,8 @@ void CCEGLView::OnPointerReleased(int id, const CCPoint& point)
     if (! pTouch || ! pSet)
         return;
 
-    float x = point.x;
-    float y = point.y;
-    ConvertPointerCoords(x, y);
-    pTouch->SetTouchInfo(0, x, y);
+    CCPoint internalPoint = ConvertPointerCoords(point);
+    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
 
     m_pDelegate->touchesEnded(pSet, NULL);
     pSet->removeObject(pTouch);
@@ -769,10 +782,8 @@ void CCEGLView::OnPointerMoved(int id, const CCPoint& point)
     if (! pTouch || ! pSet)
         return;
 
-    float x = point.x;
-    float y = point.y;
-    ConvertPointerCoords(x, y);
-    pTouch->SetTouchInfo(0, x, y);
+    CCPoint internalPoint = ConvertPointerCoords(point);
+    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
 
     m_pDelegate->touchesMoved(pSet, NULL);
 }

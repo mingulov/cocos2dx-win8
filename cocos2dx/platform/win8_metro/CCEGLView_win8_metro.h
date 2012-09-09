@@ -193,7 +193,11 @@ public:
     void OnPointerReleased(int id, const CCPoint& point);
     void OnPointerMoved(int id, const CCPoint& point);
 protected:
-    void ConvertPointerCoords(float &x, float &y);
+    CCPoint ConvertPointerCoords(const CCPoint &point);
+    /**
+    @brief	get the screen (full window) size
+    */
+    CCSize GetScreenSize() const;
 
 private:
     ID3D11Device1*           m_d3dDevice;
@@ -215,8 +219,7 @@ private:
 
     float               m_fWinScaleX;
     float               m_fWinScaleY;
-    int                 m_initWinWidth;
-    int                 m_initWinHeight;
+    CCSize              m_initWinSize;
 
     float m_color[4];
     int mMatrixMode;
