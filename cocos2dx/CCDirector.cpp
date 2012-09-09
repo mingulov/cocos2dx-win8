@@ -113,11 +113,14 @@ bool CCDirector::init(void)
 	m_bPurgeDirecotorInNextLoop = false;
 
 	m_obWinSizeInPixels = m_obWinSizeInPoints = CCSizeZero;
+	m_obScreenRectInPixels = m_obScreenRectInPoints = CCRectZero;
 
 	// portrait mode default
 	m_eDeviceOrientation = CCDeviceOrientationPortrait;		
 
 	m_pobOpenGLView = NULL;
+
+	m_bFullScreenUsage = false;
 
     m_bRetinaDisplay = false;
     m_fContentScaleFactor = 1;	
@@ -283,6 +286,9 @@ void CCDirector::setOpenGLView(CC_GLVIEW *pobOpenGLView)
 		// set size
 		m_obWinSizeInPoints = m_pobOpenGLView->getSize();
 		m_obWinSizeInPixels = CCSizeMake(m_obWinSizeInPoints.width * m_fContentScaleFactor, m_obWinSizeInPoints.height * m_fContentScaleFactor);
+		m_obScreenRectInPoints = m_pobOpenGLView->getScreenRectInPoints();
+		m_obScreenRectInPixels = CCRectMake(m_obScreenRectInPoints.origin.x * m_fContentScaleFactor, m_obScreenRectInPoints.origin.y * m_fContentScaleFactor,
+			m_obScreenRectInPoints.size.width * m_fContentScaleFactor, m_obScreenRectInPoints.size.height * m_fContentScaleFactor);
         setGLDefaultValues();
 
 		if (m_fContentScaleFactor != 1)
@@ -304,36 +310,46 @@ void CCDirector::setNextDeltaTimeZero(bool bNextDeltaTimeZero)
 void CCDirector::setProjection(ccDirectorProjection kProjection)
 {
 	CCSize size = m_obWinSizeInPixels;
+	CCRect rect = m_obScreenRectInPixels;
+	rect = m_pobOpenGLView->getScreenRectInPoints();
+	if (!isFullScreenUsage())
+	{
+		// if not allowed full screen usage - use original data
+		rect.size = size;
+		rect.origin = CCPointZero;
+	}
 	float zeye = this->getZEye();
 	switch (kProjection)
 	{
 	case kCCDirectorProjection2D:
 		if (m_pobOpenGLView) 
 		{
-			m_pobOpenGLView->setViewPortInPoints(0, 0, size.width, size.height);
+			m_pobOpenGLView->setViewPortInPoints(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 		}
 		m_pobOpenGLView->D3DMatrixMode(CC_PROJECTION);
 		m_pobOpenGLView->D3DLoadIdentity();
-		m_pobOpenGLView->D3DOrtho(0, size.width, 0, size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 
+		m_pobOpenGLView->D3DOrtho(0, rect.size.width, 0, rect.size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 
 			1024 * CC_CONTENT_SCALE_FACTOR());
 		m_pobOpenGLView->D3DMatrixMode(CC_MODELVIEW);
 		m_pobOpenGLView->D3DLoadIdentity();
+		m_pobOpenGLView->D3DTranslate(-rect.origin.x,-rect.origin.y,0);
 		break;
 
 	case kCCDirectorProjection3D:
 		if (m_pobOpenGLView) 
 		{
-			m_pobOpenGLView->setViewPortInPoints(0, 0, size.width, size.height);
+			m_pobOpenGLView->setViewPortInPoints(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 		}
 		m_pobOpenGLView->D3DMatrixMode(CC_PROJECTION);
 		m_pobOpenGLView->D3DLoadIdentity();
-		m_pobOpenGLView->D3DPerspective(60, (CCfloat)size.width/size.height, 0.5f, 1500.0f);
+		m_pobOpenGLView->D3DPerspective(60, (CCfloat)rect.size.width/rect.size.height, 0.5f, zeye*2);
 
 		m_pobOpenGLView->D3DMatrixMode(CC_MODELVIEW);	
 		m_pobOpenGLView->D3DLoadIdentity();
-		m_pobOpenGLView->D3DLookAt( size.width/2, size.height/2, zeye,
-			size.width/2, size.height/2, 0,
+		m_pobOpenGLView->D3DLookAt( rect.size.width/2, rect.size.height/2, zeye,
+			rect.size.width/2, rect.size.height/2, 0,
 			0.0f, 1.0f, 0.0f);	
+		m_pobOpenGLView->D3DTranslate(-rect.origin.x,-rect.origin.y,0);
 		break;
 			
 	case kCCDirectorProjectionCustom:
@@ -483,6 +499,9 @@ void CCDirector::reshapeProjection(const CCSize& newWindowSize)
     m_obWinSizeInPoints = m_pobOpenGLView->getSize();
 	m_obWinSizeInPixels = CCSizeMake(m_obWinSizeInPoints.width * m_fContentScaleFactor,
 		                             m_obWinSizeInPoints.height * m_fContentScaleFactor);
+	m_obScreenRectInPoints = m_pobOpenGLView->getScreenRectInPoints();
+	m_obScreenRectInPixels = CCRectMake(m_obScreenRectInPoints.origin.x * m_fContentScaleFactor, m_obScreenRectInPoints.origin.y * m_fContentScaleFactor,
+		m_obScreenRectInPoints.size.width * m_fContentScaleFactor, m_obScreenRectInPoints.size.height * m_fContentScaleFactor);
 
 	setProjection(m_eProjection);
 }
@@ -826,6 +845,14 @@ void CCDirector::setContentScaleFactor(CGFloat scaleFactor)
 	}
 }
 
+bool CCDirector::enableFullScreenUsage(bool enabled)
+{
+	m_bFullScreenUsage = enabled;
+	setProjection(m_eProjection);
+
+	return true;
+}
+
 CCNode* CCDirector::getNotificationNode() 
 { 
 	return m_pNotificationNode; 
@@ -892,6 +919,9 @@ void CCDirector::setDeviceOrientation(ccDeviceOrientation kDeviceOrientation)
         // So,we should calculate the Projection and window size again.
         m_obWinSizeInPoints = m_pobOpenGLView->getSize();
         m_obWinSizeInPixels = CCSizeMake(m_obWinSizeInPoints.width * m_fContentScaleFactor, m_obWinSizeInPoints.height * m_fContentScaleFactor);
+        m_obScreenRectInPoints = m_pobOpenGLView->getScreenRectInPoints();
+        m_obScreenRectInPixels = CCRectMake(m_obScreenRectInPoints.origin.x * m_fContentScaleFactor, m_obScreenRectInPoints.origin.y * m_fContentScaleFactor,
+            m_obScreenRectInPoints.size.width * m_fContentScaleFactor, m_obScreenRectInPoints.size.height * m_fContentScaleFactor);
         setProjection(m_eProjection);
     }
 }

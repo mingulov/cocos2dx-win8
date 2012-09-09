@@ -151,6 +151,7 @@ public:
 
     void setIMEKeyboardState(bool bOpen);
 
+    CCRect getScreenRectInPoints() const;
     void getScreenRectInView(CCRect& rect);
     void setScreenScale(float factor);
 

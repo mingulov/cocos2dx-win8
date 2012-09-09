@@ -200,12 +200,20 @@ void CCEGLView::setIMEKeyboardState(bool /*bOpen*/)
 
 void CCEGLView::getScreenRectInView(CCRect& rect)
 {
+    rect = getScreenRectInPoints();
+}
+
+CCRect CCEGLView::getScreenRectInPoints() const
+{
+    CCRect rect;
     CCSize winSize = GetScreenSize();
 
     rect.origin.x = float(- m_rcViewPort.left) / m_fScreenScaleFactor;
     rect.origin.y = float(- m_rcViewPort.top) / m_fScreenScaleFactor;
     rect.size.width = float(winSize.width) / m_fScreenScaleFactor;
     rect.size.height = float(winSize.height) / m_fScreenScaleFactor;
+
+    return rect;
 }
 
 void CCEGLView::setScreenScale(float factor)
