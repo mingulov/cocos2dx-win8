@@ -875,6 +875,10 @@ void CCDirector::setNotificationNode(CCNode *node)
 void CCDirector::applyOrientation(void)
 {
 	CCSize s = m_obWinSizeInPixels;
+	if (isFullScreenUsage())
+	{
+		s = m_obScreenRectInPixels.size;
+	}
 	float w = s.width / 2;
 	float h = s.height / 2;
 
@@ -887,17 +891,17 @@ void CCDirector::applyOrientation(void)
 		break;
 	case CCDeviceOrientationPortraitUpsideDown:
 		m_pobOpenGLView->D3DTranslate(w,h,0);
-		m_pobOpenGLView->D3DRotate(180,0,0,1);
+		m_pobOpenGLView->D3DRotate(M_PI,0,0,1);
 		m_pobOpenGLView->D3DTranslate(-w,-h,0);
 		break;
 	case CCDeviceOrientationLandscapeRight:
 		m_pobOpenGLView->D3DTranslate(w,h,0);
-		m_pobOpenGLView->D3DRotate(90,0,0,1);
+		m_pobOpenGLView->D3DRotate(M_PI_2,0,0,1);
 		m_pobOpenGLView->D3DTranslate(-h,-w,0);
 		break;
 	case CCDeviceOrientationLandscapeLeft:
 		m_pobOpenGLView->D3DTranslate(w,h,0);
-		m_pobOpenGLView->D3DRotate(-90,0,0,1);
+		m_pobOpenGLView->D3DRotate(-M_PI_2,0,0,1);
 		m_pobOpenGLView->D3DTranslate(-h,-w,0);
 		break;
 	}
@@ -918,18 +922,19 @@ void CCDirector::setDeviceOrientation(ccDeviceOrientation kDeviceOrientation)
 	if (m_eDeviceOrientation != eNewOrientation)
 	{
 		m_eDeviceOrientation = eNewOrientation;
+
+		// after rotation - window size is changed
+		if (m_pobOpenGLView)
+		{
+		    m_pobOpenGLView->OnWindowSizeChanged();
+		}
 	}
     else
     {
         // this logic is only run on win32 now
         // On win32,the return value of CCApplication::setDeviceOrientation is always kCCDeviceOrientationPortrait
         // So,we should calculate the Projection and window size again.
-        m_obWinSizeInPoints = m_pobOpenGLView->getSize();
-        m_obWinSizeInPixels = CCSizeMake(m_obWinSizeInPoints.width * m_fContentScaleFactor, m_obWinSizeInPoints.height * m_fContentScaleFactor);
-        m_obScreenRectInPoints = m_pobOpenGLView->getScreenRectInPoints();
-        m_obScreenRectInPixels = CCRectMake(m_obScreenRectInPoints.origin.x * m_fContentScaleFactor, m_obScreenRectInPoints.origin.y * m_fContentScaleFactor,
-            m_obScreenRectInPoints.size.width * m_fContentScaleFactor, m_obScreenRectInPoints.size.height * m_fContentScaleFactor);
-        setProjection(m_eProjection);
+		reshapeProjection(m_pobOpenGLView->getSize());
     }
 }
 
