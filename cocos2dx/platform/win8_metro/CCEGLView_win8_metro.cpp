@@ -819,7 +819,7 @@ void CCEGLView::OnPointerMoved(int id, const CCPoint& point)
         return;
 
     CCPoint internalPoint = ConvertPointerCoords(point);
-    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
+    pTouch->SetTouchInfo(internalPoint.x, internalPoint.y);
 
     m_pDelegate->touchesMoved(pSet, NULL);
 }

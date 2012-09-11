@@ -115,6 +115,11 @@ const char* CCFileUtils::fullPathFromRelativePath(const char *pszRelativePath, c
         pRet->m_sString = s_pszResourcePath;
         pRet->m_sString += pszRelativePath;
     }
+    if (pResolutionType)
+    {
+        *pResolutionType = kCCResolutioniPhone;
+    }
+
     if (CC_CONTENT_SCALE_FACTOR() != 1.0f)
     {
         std::string hiRes = pRet->m_sString.c_str();
@@ -123,19 +128,11 @@ const char* CCFileUtils::fullPathFromRelativePath(const char *pszRelativePath, c
 
         if (std::string::npos != dotPos && dotPos > pos)
         {
-            hiRes.insert(dotPos, CC_RETINA_DISPLAY_FILENAME_SUFFIX);
-            if (pResolutionType)
-            {
-                *pResolutionType = kCCResolutioniPhoneRetinaDisplay;
-            }
+            hiRes.insert(dotPos, __suffixiPhoneRetinaDisplay);
         }
         else
         {
-            hiRes.append(CC_RETINA_DISPLAY_FILENAME_SUFFIX);
-            if (pResolutionType)
-            {
-                *pResolutionType = kCCResolutioniPhone;
-            }
+            hiRes.append(__suffixiPhoneRetinaDisplay);
         }
 
         WIN32_FILE_ATTRIBUTE_DATA fileInformation;
@@ -146,10 +143,13 @@ const char* CCFileUtils::fullPathFromRelativePath(const char *pszRelativePath, c
             if (attrib != INVALID_FILE_ATTRIBUTES && ! (FILE_ATTRIBUTE_DIRECTORY & attrib))
             {
                 pRet->m_sString.swap(hiRes);
+                if (pResolutionType)
+                {
+	                *pResolutionType = kCCResolutioniPhoneRetinaDisplay;
+                }
             }
         }
     }
-#endif
 	return pRet->m_sString.c_str();
 }
 
