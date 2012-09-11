@@ -786,7 +786,7 @@ void CCEGLView::OnPointerPressed(int id, const CCPoint& point)
         return;
 
     CCPoint internalPoint = ConvertPointerCoords(point);
-    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
+    pTouch->SetTouchInfo(internalPoint.x, internalPoint.y);
     pSet->addObject(pTouch);
 
     m_pDelegate->touchesBegan(pSet, NULL);
@@ -801,7 +801,7 @@ void CCEGLView::OnPointerReleased(int id, const CCPoint& point)
         return;
 
     CCPoint internalPoint = ConvertPointerCoords(point);
-    pTouch->SetTouchInfo(0, internalPoint.x, internalPoint.y);
+    pTouch->SetTouchInfo(internalPoint.x, internalPoint.y);
 
     m_pDelegate->touchesEnded(pSet, NULL);
     pSet->removeObject(pTouch);
